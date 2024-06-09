@@ -2,7 +2,7 @@ import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
 import { app } from '../firebase'
 import { useDispatch } from 'react-redux'
 import { signInSuccess } from '../redux/user/useSlice.js'
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function OAuth() {
 
@@ -20,16 +20,22 @@ function OAuth() {
                 },
                 body: JSON.stringify({ name: result.user.displayName, email: result.user.email, photo: result.user.photoURL })
             })
-            const data = await res.json()
+            const data = await res.json();
             dispatch(signInSuccess(data))
             navigate('/')
+
         } catch (error) {
-            console.log("error", error)
+            console.log("could not sign in with google", error)
         }
     }
 
     return (
-        <button type='button' onClick={handleGoogleClick} className='bg-red-700 p-3 text-white rounded-lg uppercase hover:opacity-90'>Continue with google</button>
+        <button
+            type='button'
+            onClick={handleGoogleClick}
+            className='bg-red-700 p-3 text-white rounded-lg uppercase hover:opacity-90'>
+            Continue with google
+        </button>
     )
 }
 
