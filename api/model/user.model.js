@@ -1,21 +1,25 @@
-import mongoose,{Schema} from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema({
-    username:{
+    username: {
         type: String,
         required: true,
         unique: true
     },
-    email:{
+    email: {
         type: String,
         required: true,
         unique: true
     },
-    password:{
+    password: {
         type: String,
         required: true,
     },
-},{
+    avatar: {
+        type: String,
+        default: "https://images.app.goo.gl/abUqKqiuMM7RxfAw6"
+    }
+}, {
     timestamps: true
 })
 
