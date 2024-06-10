@@ -8,6 +8,7 @@ export default function SignUp() {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
+
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -17,7 +18,9 @@ export default function SignUp() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setLoading(true)
+
         try {
+            
             const res = await fetch('/api/auth/signup',
                 {
                     method: "POST",
@@ -31,14 +34,18 @@ export default function SignUp() {
             if (data.success === false) {
                 setError(data.message)
                 setLoading(false)
+                
+                return
             }
             setLoading(false)
             console.log(data)
             setError(null)
+            
             navigate('/sign-in')
         } catch (error) {
             setLoading(false)
             setError(error.message)
+            
         }
     }
 

@@ -9,15 +9,12 @@ import jwt from 'jsonwebtoken'
 export const signup = async (req, res, next) => {
     try {
         const { username, email, password } = req.body
-
         if (
             [username, email, password].some((fields) => fields?.trim() === "")
         ) {
             throw new Error(400, "All fields are required")
         }
-
         const existingUser = await User.findOne({ username })
-
         if (existingUser) {
             res
                 .status(401)
@@ -91,12 +88,23 @@ export const google = async (req, res, next) => {
                 avatar: req.body.photo
             })
             await newUser.save()
-            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET)
             const { password: pass, ...rest } = newUser._doc
-            res.cookie('access_token', token, { httpOnly: true })
+            res
+            .cookie('access_token', token, { httpOnly: true })
             .status(200)
             .json(rest)
         }
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+export const signOut = async(req, res, next) =>{
+    try {
+        res.clearCookie('access_token')
+        res.status(200).json('User has been logged out')
     } catch (error) {
         next(error)
     }
